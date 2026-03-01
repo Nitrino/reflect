@@ -2,6 +2,10 @@
 name = "reflect"
 version = "0.1.0"
 edition = "2024"
+description = "One-way sync from git worktrees to repo root via Mutagen"
+license = "MIT"
+repository = "https://github.com/Nitrino/reflect"
+homepage = "https://github.com/Nitrino/reflect"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
@@ -9,3 +13,8 @@ anyhow = "1"
 which = "4"
 sha2 = "0.10"
 ctrlc = "3"
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
