@@ -77,14 +77,14 @@ pub fn stash_push(root: &Path) -> anyhow::Result<bool> {
 
 pub fn restore_working_tree(root: &Path) -> anyhow::Result<()> {
     let output = Command::new("git")
-        .args(["checkout", "."])
+        .args(["reset", "--hard", "HEAD"])
         .current_dir(root)
         .output()
-        .context("Failed to run git checkout")?;
+        .context("Failed to run git reset")?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(anyhow!("git checkout . failed: {}", stderr));
+        return Err(anyhow!("git reset --hard HEAD failed: {}", stderr));
     }
 
     Ok(())
