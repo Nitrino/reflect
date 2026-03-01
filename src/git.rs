@@ -75,6 +75,21 @@ pub fn stash_push(root: &Path) -> anyhow::Result<bool> {
     Ok(!stdout.contains("No local changes"))
 }
 
+pub fn restore_working_tree(root: &Path) -> anyhow::Result<()> {
+    let output = Command::new("git")
+        .args(["checkout", "."])
+        .current_dir(root)
+        .output()
+        .context("Failed to run git checkout")?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(anyhow!("git checkout . failed: {}", stderr));
+    }
+
+    Ok(())
+}
+
 pub fn stash_pop(root: &Path) -> anyhow::Result<()> {
     // Find the reflect-backup stash
     let output = Command::new("git")

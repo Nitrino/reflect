@@ -62,6 +62,7 @@ fn cmd_start(worktree: Option<PathBuf>, root: Option<PathBuf>, watch: bool) -> a
             if r.swap(false, Ordering::SeqCst) {
                 eprintln!("\nStopping...");
                 let _ = mutagen::terminate_session(&stop_name);
+                let _ = git::restore_working_tree(&stop_root);
                 let _ = git::stash_pop(&stop_root);
                 eprintln!("Root restored. Reflect stopped.");
                 std::process::exit(0);
@@ -83,6 +84,7 @@ fn cmd_stop(root: Option<PathBuf>) -> anyhow::Result<()> {
     let name = mutagen::session_name(&root);
 
     mutagen::terminate_session(&name)?;
+    git::restore_working_tree(&root)?;
     git::stash_pop(&root)?;
 
     eprintln!("Stopped. Root restored.");
