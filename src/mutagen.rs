@@ -38,6 +38,7 @@ pub fn create_session(name: &str, worktree: &Path, root: &Path) -> anyhow::Resul
             "--ignore-vcs",
             "--ignore=target/",
             "--ignore=node_modules/",
+            "--ignore=.claude/",
         ])
         .arg(worktree.to_string_lossy().as_ref())
         .arg(root.to_string_lossy().as_ref())
