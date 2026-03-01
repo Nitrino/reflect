@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="banner.avif" alt="reflect banner" />
+</p>
+
 # reflect
 
 One-way sync from git worktrees to repo root via Mutagen.
