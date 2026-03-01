@@ -1,6 +1,6 @@
 [package]
 name = "reflect"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2024"
 description = "One-way sync from git worktrees to repo root via Mutagen"
 license = "MIT"
