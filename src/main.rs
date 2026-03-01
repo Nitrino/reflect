@@ -42,7 +42,7 @@ fn cmd_start(worktree: Option<PathBuf>, root: Option<PathBuf>, watch: bool) -> a
         ));
     }
 
-    let stashed = git::stash_push(&root)?;
+    let stashed = git::stash_push(&root, &name)?;
     if stashed {
         eprintln!("Stashed root changes (reflect-backup)");
     }
@@ -63,7 +63,7 @@ fn cmd_start(worktree: Option<PathBuf>, root: Option<PathBuf>, watch: bool) -> a
                 eprintln!("\nStopping...");
                 let _ = mutagen::terminate_session(&stop_name);
                 let _ = git::restore_working_tree(&stop_root);
-                let _ = git::stash_pop(&stop_root);
+                let _ = git::stash_pop(&stop_root, &stop_name);
                 eprintln!("Root restored. Reflect stopped.");
                 std::process::exit(0);
             }
@@ -85,7 +85,7 @@ fn cmd_stop(root: Option<PathBuf>) -> anyhow::Result<()> {
 
     mutagen::terminate_session(&name)?;
     git::restore_working_tree(&root)?;
-    git::stash_pop(&root)?;
+    git::stash_pop(&root, &name)?;
 
     eprintln!("Stopped. Root restored.");
     Ok(())

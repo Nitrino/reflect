@@ -57,9 +57,10 @@ fn strip_worktree_suffix(gitdir: &Path) -> anyhow::Result<PathBuf> {
         .ok_or_else(|| anyhow!("Could not determine main repo root from gitdir: {}", gitdir.display()))
 }
 
-pub fn stash_push(root: &Path) -> anyhow::Result<bool> {
+pub fn stash_push(root: &Path, session: &str) -> anyhow::Result<bool> {
+    let msg = format!("reflect-backup {}", session);
     let output = Command::new("git")
-        .args(["stash", "push", "-m", "reflect-backup"])
+        .args(["stash", "push", "-m", &msg])
         .current_dir(root)
         .output()
         .context("Failed to run git stash")?;
@@ -90,8 +91,8 @@ pub fn restore_working_tree(root: &Path) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub fn stash_pop(root: &Path) -> anyhow::Result<()> {
-    // Find the reflect-backup stash
+pub fn stash_pop(root: &Path, session: &str) -> anyhow::Result<()> {
+    let marker = format!("reflect-backup {}", session);
     let output = Command::new("git")
         .args(["stash", "list"])
         .current_dir(root)
@@ -101,7 +102,7 @@ pub fn stash_pop(root: &Path) -> anyhow::Result<()> {
     let list = String::from_utf8_lossy(&output.stdout);
     let stash_ref = list
         .lines()
-        .find(|l| l.contains("reflect-backup"))
+        .find(|l| l.contains(&marker))
         .and_then(|l| l.split(':').next())
         .map(|s| s.to_string());
 
