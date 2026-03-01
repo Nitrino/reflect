@@ -5,6 +5,13 @@ One-way sync from git worktrees to repo root via Mutagen.
 ## Install
 
 ```bash
+# Shell installer (macOS/Linux)
+curl --proto '=https' -LsSf https://github.com/Nitrino/reflect/releases/latest/download/reflect-installer.sh | sh
+
+# Homebrew
+brew install Nitrino/tap/reflect
+
+# From source
 cargo install --path .
 ```
 
