@@ -15,3 +15,5 @@ publish-jobs = ["homebrew"]
 tap = "Nitrino/homebrew-tap"
 # Target platforms to build apps for (Rust target-triple syntax)
 targets = ["aarch64-apple-darwin", "aarch64-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu"]
+# Allow manual edits to CI workflow (mutagen dependency injection)
+allow-dirty = ["ci"]
